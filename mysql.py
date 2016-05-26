@@ -7,7 +7,8 @@ class MyDB:
     #构造函数
     def __init__(self):
         self.conn = MySQLdb.connect(host="localhost",user="root",passwd="",port=3306,db="python",charset="utf8")
-        self.cur = self.conn.cursor()#这种方式查询返回的值默认的只能通过v[0]数字key来访问，想要通过表字段名来查询，需要加上cursorclass = MySQLdb.cursors.DictCursor
+        self.cur = self.conn.cursor(cursorclass = MySQLdb.cursors.DictCursor)
+        #这种方式查询返回的值默认的只能通过v[0]数字key来访问，想要通过表字段名来查询，需要加上self.conn.cursor(cursorclass = MySQLdb.cursors.DictCursor)
         print 'xx'
 
     #析构函数
@@ -41,3 +42,7 @@ class MyDB:
     def getMany(self,sql):
         count = self.cur.execute(sql)
         return self.cur.fetchall()
+
+    #更新
+    def updateData(self,sql):
+        return self.cur.execute(sql)
