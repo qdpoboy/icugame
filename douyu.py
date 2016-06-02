@@ -21,7 +21,7 @@ def douyu(one):
         gurl  = one['url']+'?page='+str(one['page'])+'&isAjax=1'
     else:
         gurl  = one['url']
-    res   = requests.get(gurl,headers = headers)
+    res   = requests.get(gurl,headers = headers,timeout = 10)
     if one['page'] == 1:
         com   = re.compile('<ul.*?id="live-list-contentbox".*?>(.*?)</ul>',re.S)
         con   = re.findall(com,res.text)
@@ -67,7 +67,6 @@ def startGo():
             'how':{'url':'http://www.douyu.com/directory/game/How','id':3,'page':1},
             'hszz':{'url':'http://www.douyu.com/directory/game/hszz','id':4,'page':1},
             'overwatch':{'url':'http://www.douyu.com/directory/game/Overwatch','id':5,'page':1}
-            
             }
     my = mysql.MyDB()
     for pt in all_arr.keys():
