@@ -5,7 +5,6 @@ import requests
 import mysql
 
 #1斗鱼2熊猫3全民直播4虎牙直播
-#目前未分页抓取，只抓取了首页
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -65,7 +64,10 @@ def startGo():
     all_arr = {
             'wow':{'url':'http://www.douyu.com/directory/game/WOW','id':1,'page':1},
             'lol':{'url':'http://www.douyu.com/directory/game/LOL','id':2,'page':1},
-            'how':{'url':'http://www.douyu.com/directory/game/How','id':3,'page':1}
+            'how':{'url':'http://www.douyu.com/directory/game/How','id':3,'page':1},
+            'hszz':{'url':'http://www.douyu.com/directory/game/hszz','id':4,'page':1}
+            'overwatch':{'url':'http://www.douyu.com/directory/game/Overwatch','id':5,'page':1}
+            
             }
     my = mysql.MyDB()
     for pt in all_arr.keys():
