@@ -65,7 +65,7 @@ def startGo():
             'wow':{'url':'http://www.douyu.com/directory/game/WOW','id':1,'page':1},
             'lol':{'url':'http://www.douyu.com/directory/game/LOL','id':2,'page':1},
             'how':{'url':'http://www.douyu.com/directory/game/How','id':3,'page':1},
-            'hszz':{'url':'http://www.douyu.com/directory/game/hszz','id':4,'page':1}
+            'hszz':{'url':'http://www.douyu.com/directory/game/hszz','id':4,'page':1},
             'overwatch':{'url':'http://www.douyu.com/directory/game/Overwatch','id':5,'page':1}
             
             }
