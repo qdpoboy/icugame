@@ -73,7 +73,8 @@ def startGo():
             'lol':{'url':'http://www.panda.tv/cate/lol','id':2,'page':1,'page_class':'lol'},
             'how':{'url':'http://www.panda.tv/cate/hearthstone','id':3,'page':1,'page_class':'hearthstone'},
             'hszz':{'url':'http://www.panda.tv/cate/clashroyale','id':4,'page':1,'page_class':'clashroyale'},
-            'overwatch':{'url':'http://www.panda.tv/cate/overwatch','id':5,'page':1,'page_class':'overwatch'}
+            'overwatch':{'url':'http://www.panda.tv/cate/overwatch','id':5,'page':1,'page_class':'overwatch'},
+            'dota2':{'url':'http://www.panda.tv/cate/dota2','id':6,'page':1,'page_class':'dota2'},
             }
     my = mysql.MyDB()
     for pt in all_arr.keys():

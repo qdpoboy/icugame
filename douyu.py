@@ -25,32 +25,30 @@ def douyu(one):
     if one['page'] == 1:
         com   = re.compile('<ul.*?id="live-list-contentbox".*?>(.*?)</ul>',re.S)
         con   = re.findall(com,res.text)
-        com1  = re.compile('<li.*?>.*?<a.*?href="/(.*?)".*?title="(.*?)".*?>.*?<img.*?data-original="(.*?)".*?>.*?<div.*?class="mes">.*?<span.*?class="tag ellipsis">(.*?)</span>.*?</div>.*?<p>.*?<span.*?class="dy-name ellipsis fl">(.*?)</span>.*?<span.*?class="dy-num fr">(.*?)</span>.*?</p>.*?</div>.*?</a>.*?</li>',re.S)
+        com1  = re.compile('<li.*?data-rid=\'(.*?)\'>.*?<a.*?href="/(.*?)".*?title="(.*?)".*?>.*?<img.*?data-original="(.*?)".*?>.*?<div.*?class="mes">.*?<span.*?class="tag ellipsis">(.*?)</span>.*?</div>.*?<p>.*?<span.*?class="dy-name ellipsis fl">(.*?)</span>.*?<span.*?class="dy-num fr">(.*?)</span>.*?</p>.*?</div>.*?</a>.*?</li>',re.S)
         con1  = re.findall(com1,con[0])
     else:
-        com1  = re.compile('<li.*?>.*?<a.*?href="/(.*?)".*?title="(.*?)".*?>.*?<img.*?data-original="(.*?)".*?>.*?<div.*?class="mes">.*?<span.*?class="tag ellipsis">(.*?)</span>.*?</div>.*?<p>.*?<span.*?class="dy-name ellipsis fl">(.*?)</span>.*?<span.*?class="dy-num fr">(.*?)</span>.*?</p>.*?</div>.*?</a>.*?</li>',re.S)
+        com1  = re.compile('<li.*?data-rid=\'(.*?)\'>.*?<a.*?href="/(.*?)".*?title="(.*?)".*?>.*?<img.*?data-original="(.*?)".*?>.*?<div.*?class="mes">.*?<span.*?class="tag ellipsis">(.*?)</span>.*?</div>.*?<p>.*?<span.*?class="dy-name ellipsis fl">(.*?)</span>.*?<span.*?class="dy-num fr">(.*?)</span>.*?</p>.*?</div>.*?</a>.*?</li>',re.S)
         con1  = re.findall(com1,res.text)
-    
     page  = one['page'] + 1
     for item in con1:
-        #print item[0]#用户id，专属域名
-        #print item[1]#房间名
-        #print item[2]#缩略图
-        #print item[3]#游戏分类
-        #print item[4]#主播名
-        #print item[5]#房间用户数
-        #print "\n"
+        rid     = item[0]#房间id
+        uid     = item[1]#用户id，专属域名
+        rname   = item[2]#房间名
+        img     = item[3]#缩略图
+        #gtype   = item[4]#游戏分类
+        uname   = item[5]#主播名
+        see     = item[6]#房间用户数
         url     = base_url+item[0]
-        see_num = item[5]
-        if '万' in item[5]:
-            see_num = int(float(item[5][0:len(item[5])-1])*10000)
-        find    = my.getOne("select * from zhibo where type = 1 and uid = '%s'"%(item[0]))
+        if '万' in see:
+            see = int(float(see[0:len(see)-1])*10000)
+        find    = my.getOne("select * from zhibo where type = 1 and uid = '%s'"%(uid))
         nowtime = getDatetime()
         if find:
-            sql = "update zhibo set see = '%s',online = 1,img = '%s',uptime = '%s',rname = '%s' where id = %d"%(see_num,item[2],nowtime,item[1],find['id'])
+            sql = "update zhibo set see = '%s',online = 1,img = '%s',uptime = '%s',rname = '%s' where id = %d"%(see,img,nowtime,rname,find['id'])
             my.updateData(sql)
         else:
-            sql  = "insert into zhibo (uid,uname,rname,url,img,see,type,gtype,online,addtime,uptime) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"%(item[0],item[4],item[1],url,item[2],see_num,1,gtype,1,nowtime,nowtime)
+            sql  = "insert into zhibo (uid,rid,uname,rname,url,img,see,type,gtype,online,addtime,uptime) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"%(uid,rid,uname,rname,url,img,see,1,gtype,1,nowtime,nowtime)
             my.insertData(sql)
     if len(con1) == 120:
         douyu({'url':one['url'],'id':1,'page':page})
@@ -66,7 +64,8 @@ def startGo():
             'lol':{'url':'http://www.douyu.com/directory/game/LOL','id':2,'page':1},
             'how':{'url':'http://www.douyu.com/directory/game/How','id':3,'page':1},
             'hszz':{'url':'http://www.douyu.com/directory/game/hszz','id':4,'page':1},
-            'overwatch':{'url':'http://www.douyu.com/directory/game/Overwatch','id':5,'page':1}
+            'overwatch':{'url':'http://www.douyu.com/directory/game/Overwatch','id':5,'page':1},
+            'dota2':{'url':'http://www.douyu.com/directory/game/DOTA2','id':6,'page':1}
             }
     my = mysql.MyDB()
     for pt in all_arr.keys():
