@@ -50,7 +50,7 @@ def panda(one):
             rname   = item['name']
             see     = item['person_num']
             url     = base_url+uid
-            find    = my.getOne("select * from zhibo where type = 2 and uid = '%s'"%(uid))
+            find    = my.getOne("select * from zhibo where uid = '%s' and type = 2"%(uid))
             nowtime = getDatetime()
             if find:
                 sql = "update zhibo set see = '%s',online = 1,img = '%s',uptime = '%s',rname = '%s' where id = %d"%(see,img,nowtime,rname,find['id'])

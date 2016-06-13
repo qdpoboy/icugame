@@ -42,10 +42,10 @@ def douyu(one):
         url     = base_url+item[0]
         if '万' in see:
             see = int(float(see[0:len(see)-1])*10000)
-        find    = my.getOne("select * from zhibo where type = 1 and uid = '%s'"%(uid))
+        find    = my.getOne("select * from zhibo where uid = '%s' and type = 1"%(uid))
         nowtime = getDatetime()
         if find:
-            sql = "update zhibo set see = '%s',online = 1,img = '%s',uptime = '%s',rname = '%s' where id = %d"%(see,img,nowtime,rname,find['id'])
+            sql = "update zhibo set see = '%s',online = 1,rid = '%s',img = '%s',uptime = '%s',rname = '%s' where id = %d"%(see,rid,img,nowtime,rname,find['id'])
             my.updateData(sql)
         else:
             sql  = "insert into zhibo (uid,rid,uname,rname,url,img,see,type,gtype,online,addtime,uptime) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"%(uid,rid,uname,rname,url,img,see,1,gtype,1,nowtime,nowtime)
