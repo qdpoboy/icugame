@@ -21,7 +21,7 @@ def douyu(one):
         gurl  = one['url']+'?page='+str(one['page'])+'&isAjax=1'
     else:
         gurl  = one['url']
-    res   = requests.get(gurl,headers = headers,timeout = 10)
+    res   = requests.get(gurl,headers = headers,timeout = 15)
     if one['page'] == 1:
         com   = re.compile('<ul.*?id="live-list-contentbox".*?>(.*?)</ul>',re.S)
         con   = re.findall(com,res.text)
@@ -34,7 +34,7 @@ def douyu(one):
     for item in con1:
         rid     = item[0]#房间id
         uid     = item[1]#用户id，专属域名
-        rname   = item[2]#房间名
+        rname   = my.escape_string(item[2])#房间名
         img     = item[3]#缩略图
         #gtype   = item[4]#游戏分类
         uname   = item[5]#主播名
@@ -45,13 +45,14 @@ def douyu(one):
         find    = my.getOne("select * from zhibo where uid = '%s' and type = 1"%(uid))
         nowtime = getDatetime()
         if find:
-            sql = "update zhibo set see = '%s',online = 1,rid = '%s',img = '%s',uptime = '%s',rname = '%s' where id = %d"%(see,rid,img,nowtime,rname,find['id'])
+            sql = "update zhibo set see = '%s',online = 1,img = '%s',uptime = '%s',rname = '%s' where id = %d"%(see,img,nowtime,rname,find['id'])
             my.updateData(sql)
         else:
             sql  = "insert into zhibo (uid,rid,uname,rname,url,img,see,type,gtype,online,addtime,uptime) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"%(uid,rid,uname,rname,url,img,see,1,gtype,1,nowtime,nowtime)
             my.insertData(sql)
     if len(con1) == 120:
-        douyu({'url':one['url'],'id':1,'page':page})
+        time.sleep(1.5)
+        douyu({'url':one['url'],'id':gtype,'page':page})
 
 #获取当前日期时间，格式2007-06-02 04:55:02
 def getDatetime():

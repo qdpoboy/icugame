@@ -34,10 +34,10 @@ def panda(one):
             find    = my.getOne("select * from zhibo where type = 2 and uid = '%s'"%(item[0]))
             nowtime = getDatetime()
             if find:
-                sql = "update zhibo set see = '%s',online = 1,img = '%s',uptime = '%s',rname = '%s' where id = %d"%(item[4],item[1],nowtime,item[2],find['id'])
+                sql = "update zhibo set see = '%s',online = 1,img = '%s',uptime = '%s',rname = '%s' where id = %d"%(item[4],item[1],nowtime,my.escape_string(item[2]),find['id'])
                 my.updateData(sql)
             else:
-                sql = "insert into zhibo (uid,uname,rname,url,img,see,type,gtype,online,addtime,uptime) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"%(item[0],item[3],item[2],url,item[1],item[4],2,gtype,1,nowtime,nowtime)
+                sql = "insert into zhibo (uid,uname,rname,url,img,see,type,gtype,online,addtime,uptime) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"%(item[0],item[3],my.escape_string(item[2]),url,item[1],item[4],2,gtype,1,nowtime,nowtime)
                 my.insertData(sql)
     else:
         gurl  = base_url+'ajax_sort?token=&pageno='+str(one['page'])+'&pagenum=120&classification='+one['page_class']+'&_='+str(time.time())
@@ -47,7 +47,7 @@ def panda(one):
             uid     = item['id']
             img     = item['pictures']['img']
             uname   = item['userinfo']['nickName']
-            rname   = item['name']
+            rname   = my.escape_string(item['name'])
             see     = item['person_num']
             url     = base_url+uid
             find    = my.getOne("select * from zhibo where uid = '%s' and type = 2"%(uid))
@@ -60,7 +60,8 @@ def panda(one):
                 my.insertData(sql)
         
     if len(con) != 0:
-        panda({'url':one['url'],'id':1,'page':page,'page_class':one['page_class']})
+        time.sleep(1)
+        panda({'url':one['url'],'id':gtype,'page':page,'page_class':one['page_class']})
 
 #获取当前日期时间，格式2007-06-02 04:55:02
 def getDatetime():

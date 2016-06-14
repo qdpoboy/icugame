@@ -46,3 +46,7 @@ class MyDB:
     #更新
     def updateData(self,sql):
         return self.cur.execute(sql)
+
+    #特殊字符串转义
+    def escape_string(self,val):
+        return MySQLdb.escape_string(val)
