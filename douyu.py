@@ -4,7 +4,6 @@ import sys,re,threading,time
 import requests
 import mysql
 
-#1斗鱼2熊猫3全民直播4虎牙直播
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
