@@ -10,18 +10,13 @@ sys.setdefaultencoding('utf-8')
 ####5战旗####
 def zhanqi(one):
     my = mysql.MyDB()
-    #ajax请求分页 一页6*5=120个主播
-    #http://www.zhanqi.tv/90god
+    #ajax请求分页 一页6*5=30个主播
     headers  = {"Host":"www.zhanqi.tv","Referer":"http://www.zhanqi.tv","User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"}
     base_url = "http://www.zhanqi.tv/"
-
-    gtype = one['id']
-    if one['page'] > 1:
-        gurl  = one['url']+'?page='+str(one['page'])+'&isAjax=1'
-    else:
-        gurl  = one['url']
-    res   = requests.get(gurl,headers = headers,timeout = 15)
+    gtype    = one['id']
     if one['page'] == 1:
+        gurl  = one['url']
+        res   = requests.get(gurl,headers = headers,timeout = 15)
         if (gtype == 1 or gtype == 3 or gtype == 5):#暴雪的游戏
             com   = re.compile('<ul.*?class="clearfix gameList".*?class="clearfix".*?data-width=".*?">(.*?)</ul>',re.S)
             con   = re.findall(com,res.text)
