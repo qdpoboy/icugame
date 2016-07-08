@@ -8,7 +8,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 ####4虎牙####
-def quanmin(one):
+def huya(one):
     my = mysql.MyDB()
     #http://www.huya.com/index.php?m=Game&do=ajaxGameLiveByPage&gid=1&pageNum=1&page=1
     headers  = {"Host":"www.huya.com","Referer":"www.huya.com","User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"}
@@ -42,7 +42,7 @@ def quanmin(one):
     page  = one['page'] + 1
     if len(con1) == 90:
         time.sleep(1.5)
-        quanmin({'url':one['url'],'id':gtype,'page':page})
+        huya({'url':one['url'],'id':gtype,'page':page})
 
 #获取当前日期时间，格式2007-06-02 04:55:02
 def getDatetime():
@@ -63,7 +63,7 @@ def startGo():
     for pt in all_arr.keys():
         upsql = "update zhibo set online = 0 where type = 4 and gtype = %d"%(all_arr[pt]['id'])
         my.updateData(upsql)
-        thr = threading.Thread(target=quanmin,args=(all_arr[pt],))
+        thr = threading.Thread(target=huya,args=(all_arr[pt],))
         threads.append(thr)
     for t in threads:
         t.start()

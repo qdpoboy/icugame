@@ -14,7 +14,7 @@ def main(one):
         url = one['url'] + '.shtml'
     else:
         url = one['url'] + '_' + str(one['page']) + '.shtml'
-    res = requests.get(url,headers = headers,timeout = 15)
+    res = requests.get(url,headers = headers,timeout = 5)
     content = res.text.encode('ISO-8859-1').decode(requests.utils.get_encodings_from_content(res.text)[0])
 
     com1 = re.compile('<div class="article-item">.*?<div class="tit"><a href="(.*?)".*?>(.*?)</a>.*?</div>.*?<p class="info"><span class="date">(.*?)</span>.*?<span class="auto">(.*?)</span>.*?</p>.*?<p class="con">(.*?)<a.*?>.*?</a>.*?</p>.*?</div>',re.S)
@@ -27,7 +27,19 @@ def main(one):
         d_author = item[3][3:]
         d_des    = item[4]
         addtime  = getDatetime()
-        sql = "insert into gonglue (title,url,author,date,type,gtype,addtime) values('%s','%s','%s','%s','%s','%s','%s')"%(d_title,d_url,d_author,d_date,1,3,addtime)
+        res1     = requests.get(d_url,headers = headers,timeout = 5)
+        com2     = re.compile('<div.*?id="mod_article">.*?<div id="content_begin"></div>(.*?)<a.*?><img.*?/>.*?</a>.*?<a.*?>.*?</a>.*?</div>',re.S)
+        con2     = re.findall(com2,res1.text)
+        if len(con2) == 1:
+            d_con    = my.escape_string(con2[0])
+        else:
+            com2     = re.compile('<div.*?class="content article-content article-con">(.*?)</div>',re.S)
+            con2     = re.findall(com2,res1.text)
+            if len(con2) == 1:
+                d_con    = my.escape_string(con2[0])
+            else:
+                d_con    = ''
+        sql  = "insert into gonglue (title,url,author,date,type,gtype,content,addtime) values('%s','%s','%s','%s','%s','%s','%s','%s')"%(d_title,d_url,d_author,d_date,1,3,d_con,addtime)
         my.insertData(sql);
 
     page = one['page'] + 1
